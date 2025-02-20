@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
-import './globals.css';
 import { AuthContextProvider } from '@/providers/AuthContextProvider';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import './globals.css';
 
 const IBMPlexSans = IBM_Plex_Sans({
   weight: '400',
@@ -31,6 +32,7 @@ export default function RootLayout({
         className={`${IBMPlexSans.variable} ${IBMPlexMono.variable} antialiased font-[family-name:var(--font-ibm-sans)]`}
       >
         <AuthContextProvider>{children}</AuthContextProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
