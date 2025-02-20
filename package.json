@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.749.0",
+    "@vercel/speed-insights": "^1.2.0",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
