@@ -1,5 +1,7 @@
 import { HTMLInputTypeAttribute } from 'react';
 
+// TODO: necessary?
+
 const TextInput = ({
   placeholder,
   state,
@@ -7,6 +9,7 @@ const TextInput = ({
   onChange,
   autoComplete,
   type,
+  name,
 }: {
   placeholder?: string;
   state: string;
@@ -14,6 +17,7 @@ const TextInput = ({
   onChange?: () => void;
   autoComplete?: React.HTMLInputAutoCompleteAttribute;
   type: HTMLInputTypeAttribute;
+  name: string;
 }) => {
   return (
     <input
@@ -24,8 +28,9 @@ const TextInput = ({
       }}
       type={type}
       placeholder={placeholder}
-      className="bg-inherit border-white/20 border-[1px] rounded-3xl py-2 px-4 w-full text-2xl text-text-light placeholder:text-text-light/50"
+      className="bg-inherit border-white/20 border-[1px] rounded-3xl py-2 px-4 w-full text-xl text-text-light placeholder:text-text-light/50"
       autoComplete={autoComplete}
+      name={name}
     />
   );
 };

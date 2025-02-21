@@ -1,51 +1,14 @@
 'use client';
 
+import login from '@/app/actions/login';
 import Button from '@/components/Button';
-import TextInput from '@/components/TextInput';
-import { useAuthContext } from '@/hooks/useAuthContext';
-import { logIn } from '@/utils/auth';
-import { UserNotFoundException } from '@aws-sdk/client-cognito-identity-provider';
-import { useState } from 'react';
+import { useActionState, useState } from 'react';
 
 const Login = () => {
+  const [state, action, pending] = useActionState(login, undefined);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const { setAuth } = useAuthContext();
-
-  const [loginLoading, setLoginLoading] = useState(false);
-  const [loginError, setLoginError] = useState<string | null>(null);
-
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    setLoginError(null);
-
-    e.preventDefault();
-
-    const startLoginLoading = setTimeout(() => {
-      setLoginLoading(true);
-    }, 500);
-
-    try {
-      const authenticationResult = await logIn(email, password);
-      clearTimeout(startLoginLoading);
-      setLoginLoading(false);
-      if (authenticationResult) {
-        setAuth(authenticationResult);
-      } else {
-        throw new Error('failed to login -- no response from cognito login');
-      }
-    } catch (e) {
-      clearTimeout(startLoginLoading);
-      setLoginLoading(false);
-      // TODO: handle other specific errors
-      if (e instanceof UserNotFoundException) {
-        setLoginError('Email or password is incorrect');
-      } else {
-        console.error(e);
-        setLoginError('Login failed');
-      }
-    }
-  };
 
   return (
     <div>
@@ -53,37 +16,37 @@ const Login = () => {
       <h4 className="text-text-light text-center text-xl py-5">
         Welcome back!
       </h4>
-      <form onSubmit={handleLoginSubmit}>
+      <form action={action}>
         <div className="flex flex-col gap-3">
-          <TextInput
+          <input
+            className="bg-inherit border-white/20 border-[1px] rounded-3xl py-2 px-4 w-full text-xl text-text-light placeholder:text-text-light/50"
+            name="email"
             type="email"
-            autoComplete="email"
+            autoComplete="username"
             placeholder="Email"
-            state={email}
-            setState={setEmail}
-            onChange={() => setLoginError(null)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <TextInput
+          <input
+            className="bg-inherit border-white/20 border-[1px] rounded-3xl py-2 px-4 w-full text-xl text-text-light placeholder:text-text-light/50"
+            name="password"
             type="password"
             autoComplete="current-password"
             placeholder="Password"
-            state={password}
-            setState={setPassword}
-            onChange={() => setLoginError(null)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
+          {(state?.errors ?? []).map((err, idx) => (
+            <div className="text-red-600 text-center" key={idx}>
+              {err}
+            </div>
+          ))}
           <Button
             kind="primary"
             text="Submit"
-            type="submit"
-            onClick={handleLoginSubmit}
-            isLoading={loginLoading}
+            isLoading={pending}
             disabled={email.length === 0 || password.length === 0}
           />
-          {loginError ? (
-            <div className="flex justify-center">
-              <div className="text-red-500">{loginError}</div>
-            </div>
-          ) : null}
         </div>
       </form>
     </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import UploadCloudIcon from './svg/UploadCloudIcon';
+import UploadCloudIcon from '../svg/UploadCloudIcon';
 
 export default function Home() {
   return (
@@ -26,7 +26,7 @@ export default function Home() {
           <div className="flex justify-center">
             <Link
               href="/login"
-              className="flex justify-center items-center text-2xl rounded-3xl bg-text-light text-text-dark hover:cursor-pointer transition ease-out duration-150 w-[25rem] h-[3rem]"
+              className="flex justify-center items-center text-xl rounded-3xl bg-text-light text-text-dark hover:cursor-pointer transition ease-out duration-150 w-[25rem] h-[3rem]"
             >
               Log In
             </Link>
@@ -34,7 +34,7 @@ export default function Home() {
           <div className="flex justify-center">
             <Link
               href="/signup"
-              className="flex justify-center items-center text-2xl border-[0.5px] border-text-light text-text-light rounded-3xl transition ease-out duration-150 w-[25rem] h-[3rem]"
+              className="flex justify-center items-center text-xl border-[0.5px] border-text-light text-text-light rounded-3xl transition ease-out duration-150 w-[25rem] h-[3rem]"
             >
               Sign Up
             </Link>

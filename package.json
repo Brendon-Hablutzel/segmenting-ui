@@ -13,10 +13,12 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.749.0",
     "@vercel/speed-insights": "^1.2.0",
+    "cookie": "^1.0.2",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-loading-icons": "^1.1.0"
+    "react-loading-icons": "^1.1.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

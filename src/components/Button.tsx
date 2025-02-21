@@ -30,9 +30,9 @@ const Button = ({
 
   return (
     <button
-      className={`${conditionalStyles} select-none transition ease-out duration-150 active:scale-99 rounded-3xl w-full h-[3rem] text-2xl`}
+      className={`${conditionalStyles} select-none transition ease-out duration-150 active:scale-99 rounded-3xl w-full h-[3rem] text-xl`}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || isLoading}
       type={type}
     >
       <div className="relative flex justify-center items-center">
