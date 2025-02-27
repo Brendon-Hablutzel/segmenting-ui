@@ -1,20 +1,20 @@
+import { AuthenticationResultType } from '@aws-sdk/client-cognito-identity-provider';
 import { z } from 'zod';
 
-export const SignupApiRequestBody = z.object({
-  email: z.string(),
-  password: z.string(),
-});
-
-export const ConfirmApiRequestBody = z.object({
-  email: z.string(),
-  password: z.string(),
-  code: z.string(),
-});
-
-export const AuthCookie = z.object({
+export const AuthData = z.object({
   idToken: z.string(),
   accessToken: z.string(),
   refreshToken: z.string(),
 });
 
-export type AuthCookieType = z.infer<typeof AuthCookie>;
+export type AuthDataType = z.infer<typeof AuthData>;
+
+export const authenticationResultTypeToAuthData = (
+  authResult: AuthenticationResultType,
+): AuthDataType => {
+  return AuthData.parse({
+    idToken: authResult.IdToken,
+    accessToken: authResult.AccessToken,
+    refreshToken: authResult.RefreshToken,
+  });
+};

@@ -1,13 +1,15 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { ComponentType } from 'react';
+import { ComponentType, useEffect } from 'react';
 import UploadCloudIcon from '../../svg/UploadCloudIcon';
 import Link from 'next/link';
 import HomeIcon from '@/svg/HomeIcon';
 import PlusIcon from '@/svg/PlusIcon';
 import ImageIcon from '@/svg/ImageIcon';
 import PowerIcon from '@/svg/PowerIcon';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import { useRouter } from 'next/navigation';
 
 // TODO: session refresh
 
@@ -48,12 +50,21 @@ export default function DashboardLayout({
 }>) {
   const pathName = usePathname();
 
-  return (
-    <div className="h-[100vh] max-w-[100vw] bg-bg-dark p-5 flex justify-center">
-      {/* {checked ? ( */}
+  const { auth, authLoaded } = useAuthContext();
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (authLoaded && !auth) {
+      router.replace('/login');
+    }
+  }, [auth, authLoaded, router]);
+
+  return !authLoaded || !auth ? null : (
+    <div className="max-w-[100vw] bg-bg-dark flex justify-center">
       <div className="grid grid-cols-[1fr_4fr] w-full">
-        {/* stat of navbar */}
-        <div className="mr-8 flex flex-col justify-between h-full">
+        {/* start of navbar */}
+        <div className="mr-8 flex flex-col justify-between h-[100vh] p-5 sticky top-0">
           <div className="flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-4 px-3">
               <div className="">
@@ -95,7 +106,7 @@ export default function DashboardLayout({
             Icon={PowerIcon}
           />
         </div>
-        {children}
+        <div className="p-5 max-h-screen">{children}</div>
       </div>
     </div>
   );

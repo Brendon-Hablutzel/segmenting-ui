@@ -1,7 +1,5 @@
 import { HTMLInputTypeAttribute } from 'react';
 
-// TODO: necessary?
-
 const TextInput = ({
   placeholder,
   state,

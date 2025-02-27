@@ -1,8 +1,8 @@
-'use client';
-
-import confirm from '@/app/actions/confirm';
+import { authenticationResultTypeToAuthData } from '@/app/lib/types';
 import Button from '@/components/Button';
-import { useActionState, useRef, useState } from 'react';
+import { useAuthContext } from '@/hooks/useAuthContext';
+import { confirmEmail, logIn } from '@/utils/auth';
+import { useRef, useState } from 'react';
 
 type ConfirmationCode = [string, string, string, string, string, string];
 
@@ -16,10 +16,38 @@ const Confirm = ({ email, password }: { email: string; password: string }) => {
     '',
   ]);
 
-  const [state, action, pending] = useActionState(confirm, {
-    email,
-    password,
-  });
+  const { setAuth } = useAuthContext();
+
+  const [confirmationLoading, setConfirmationLoading] = useState(false);
+  const [confirmationError, setConfirmationError] = useState<string | null>(
+    null,
+  );
+
+  const handleConfirmationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setConfirmationError(null);
+
+    try {
+      setConfirmationLoading(true);
+      await confirmEmail(email, confirmationCode.join(''));
+
+      const authResult = await logIn(email, password);
+
+      if (authResult) {
+        setAuth(authenticationResultTypeToAuthData(authResult));
+      } else {
+        throw new Error('failed to login--no response from cognito login');
+      }
+
+      setConfirmationLoading(false);
+    } catch (e) {
+      setConfirmationLoading(false);
+      console.error(e);
+      // TODO: handle specific errors
+      // TODO: handle bad code
+      setConfirmationError('Error confirming your account');
+    }
+  };
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -70,7 +98,7 @@ const Confirm = ({ email, password }: { email: string; password: string }) => {
         </div>
       </div>
       <div className="flex justify-center p-2">
-        <form action={action}>
+        <form onSubmit={handleConfirmationSubmit}>
           <div className="flex flex-col gap-5">
             <div
               className="flex justify-center gap-3"
@@ -92,15 +120,15 @@ const Confirm = ({ email, password }: { email: string; password: string }) => {
                 />
               ))}
             </div>
-            {(state?.errors ?? []).map((err, idx) => (
-              <div className="text-red-600 text-center" key={idx}>
-                {err}
+            {confirmationError ? (
+              <div className="text-red-600 text-center">
+                {confirmationError}
               </div>
-            ))}
+            ) : null}
             <Button
               kind="primary"
               text="Submit"
-              isLoading={pending}
+              isLoading={confirmationLoading}
               disabled={confirmationCode.filter((d) => !d).length > 0}
             />
           </div>

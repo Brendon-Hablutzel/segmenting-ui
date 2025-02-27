@@ -1,97 +1,149 @@
 'use client';
 
-import initializeJob from '@/app/actions/initialize-job';
+// import initializeJob from '@/app/actions/initialize-job';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
+import { useAuthContext } from '@/hooks/useAuthContext';
 import CircleXIcon from '@/svg/CircleXIcon';
+import { getAdjustedSize } from '@/utils';
+import { startJob } from '@/utils/backend';
 import Image from 'next/image';
-import { useActionState, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const AddJob = () => {
+  const router = useRouter();
+
+  const { auth } = useAuthContext();
+
+  if (!auth) {
+    throw new Error('auth must be defined');
+  }
+
   const [jobName, setJobName] = useState('');
   const [module, setModule] = useState('');
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<{ url: string; file: File } | null>(null);
+  const [imageDims, setImageDims] = useState({
+    height: 1000,
+    width: 1000,
+  });
 
-  // const [jobInitError, setJobInitError] = useState<string | null>(null);
-  // const [jobInitLoading, setJobInitLoading] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState<
+    | {
+        status: 'none';
+      }
+    | {
+        status: 'loading';
+      }
+    | {
+        status: 'error';
+        error: string;
+      }
+  >({
+    status: 'none',
+  });
 
-  const [state, action, pending] = useActionState(initializeJob, undefined);
+  const handleImageUpload: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const ev = e.currentTarget.files;
+    if (ev) {
+      if (ev.length === 0) {
+        return;
+      }
+      const img: HTMLImageElement = document.createElement('img');
+      const imgUrl = URL.createObjectURL(ev[0]);
 
-  console.log(state);
+      img.onload = function () {
+        const newDims = getAdjustedSize({
+          width: img.width,
+          height: img.height,
+        });
 
-  // const handleJobSubmit = async (e: React.FormEvent) => {
-  //   setJobInitError(null);
+        setImageDims(newDims);
+        setImage({ url: imgUrl, file: ev[0] });
+      };
 
-  //   e.preventDefault();
+      img.src = imgUrl;
+    }
+  };
 
-  //   const startInitLoading = setTimeout(() => {
-  //     setJobInitLoading(true);
-  //   }, 500);
+  const handleAddJobSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmissionStatus({
+      status: 'loading',
+    });
 
-  //   try {
-  //     if (!auth?.IdToken) {
-  //       throw new Error('missing auth id token');
-  //     }
+    if (!image) {
+      setSubmissionStatus({
+        status: 'error',
+        error: 'Missing image',
+      });
+      return;
+    }
 
-  //     if (!image) {
-  //       throw new Error('missing image');
-  //     }
-  //     console.log(image);
+    try {
+      const blob = new Blob([image.file], { type: image.file.type });
 
-  //     const blob = new Blob([image], { type: image.type });
+      const res = await startJob(auth.idToken, module, jobName, blob);
 
-  //     const res = await initializeJob(auth?.IdToken, module, blob);
-  //     clearTimeout(startInitLoading);
-  //     setJobInitLoading(false);
-  //     console.log(res);
-  //   } catch (e) {
-  //     clearTimeout(startInitLoading);
-  //     setJobInitLoading(false);
-  //     // TODO: handle other specific errors
-  //     console.error(e);
-  //   }
-  // };
+      if (!res.success) {
+        throw new Error('job was not started successfully');
+      }
+
+      setSubmissionStatus({
+        status: 'none',
+      });
+      router.push('/jobs');
+    } catch (e) {
+      // TODO: handle specific errors
+      console.error(e);
+      setSubmissionStatus({
+        status: 'error',
+        error: 'Error starting job',
+      });
+    }
+  };
 
   return (
     <div className="text-text-light">
       <div className="h-fit bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
-        <form className="flex flex-col gap-4 h-full" action={action}>
+        <form
+          className="flex flex-col gap-4 h-full"
+          onSubmit={handleAddJobSubmit}
+        >
           <div className="text-3xl">Add Job</div>
           <div className="grid grid-cols-[3fr_2fr] gap-4 h-full">
             {image ? (
-              <div className="h-auto w-full max-h-[80vh] overflow-hidden relative flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-xl">
-                <button
-                  className="absolute top-2 right-2"
-                  onClick={() => setImage(null)}
-                >
-                  <CircleXIcon
-                    strokeWidth="3"
-                    svgClassName="w-8 h-8 bg-[#1B251B]/50 rounded-full p-1"
-                    pathClassName="stroke-text-light"
+              <div className="flex justify-center">
+                <div className="h-auto w-fit max-h-[80vh] overflow-hidden relative flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-xl">
+                  <button
+                    className="absolute top-2 right-2"
+                    onClick={() => setImage(null)}
+                  >
+                    <CircleXIcon
+                      strokeWidth="3"
+                      svgClassName="w-8 h-8 bg-[#1B251B]/50 rounded-full p-1"
+                      pathClassName="stroke-text-light"
+                    />
+                  </button>
+                  <Image
+                    alt="not found"
+                    src={image.url}
+                    quality={100}
+                    height={imageDims.height}
+                    width={imageDims.width}
                   />
-                </button>
-                <Image
-                  alt="not found"
-                  src={URL.createObjectURL(image)}
-                  quality={100}
-                  height={1000}
-                  width={1000}
-                  className="w-full h-auto"
-                  priority
-                />
+                </div>
               </div>
             ) : null}
             <div
-              className={`${image ? 'hidden' : ''} flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4`}
+              className={`${image ? 'hidden' : ''} w-full flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4`}
             >
               <label className="hover:cursor-pointer p-2 text-text-light/50 select-none">
                 Click here to upload an image
                 <input
                   className="hidden"
                   type="file"
-                  onChange={(e) =>
-                    setImage(e.target.files ? e.target.files[0] : null)
-                  }
+                  onChange={handleImageUpload}
                   name="image"
                 />
               </label>
@@ -118,14 +170,19 @@ const AddJob = () => {
                 </option>
                 <option value="segmenter">Segmenter</option>
               </select>
+              {submissionStatus.status === 'error' ? (
+                <div className="text-red-600 text-center">
+                  {submissionStatus.error}
+                </div>
+              ) : null}
               <Button
                 kind="primary"
-                text="Initialize Job"
+                text="Start Job"
                 type="submit"
                 disabled={
                   jobName.length === 0 || module.length === 0 || image === null
                 }
-                isLoading={pending}
+                isLoading={submissionStatus.status === 'loading'}
               />
             </div>
           </div>

@@ -1,10 +1,7 @@
-'use client';
-
-import signup from '@/app/actions/signup';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
-import { validatePassword } from '@/utils/auth';
-import { useActionState, useEffect, useState } from 'react';
+import { signUp, validatePassword } from '@/utils/auth';
+import { useEffect, useState } from 'react';
 
 const AccountCreation = ({
   setView,
@@ -29,13 +26,26 @@ const AccountCreation = ({
     setPasswordValidationResult(validatePassword(password));
   }, [password]);
 
-  const [state, action, pending] = useActionState(signup, undefined);
+  const [signupLoading, setSignupLoading] = useState(false);
+  const [signupError, setSignupError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (state?.submitted) {
+  const handleSignupSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSignupError(null);
+
+    try {
+      setSignupLoading(true);
+      await signUp(email, password);
+      setSignupLoading(false);
+
       setView('confirm');
+    } catch (e) {
+      setSignupLoading(false);
+      console.error(e);
+      // TODO: handle specific errors
+      setSignupError('Error signing up');
     }
-  }, [state, setView]);
+  };
 
   return (
     <div>
@@ -43,7 +53,7 @@ const AccountCreation = ({
       <h4 className="text-text-light text-center text-xl py-5">
         Create an account to get started
       </h4>
-      <form action={action}>
+      <form onSubmit={handleSignupSubmit}>
         <div className="flex flex-col gap-3">
           <TextInput
             type="email"
@@ -106,16 +116,14 @@ const AccountCreation = ({
                 : '𐄂 password must be between 8 and 256 characters long'}
             </div>
           </div>
-          {(state?.errors ?? []).map((err, idx) => (
-            <div className="text-red-600 text-center" key={idx}>
-              {err}
-            </div>
-          ))}
+          {signupError ? (
+            <div className="text-red-600 text-center">{signupError}</div>
+          ) : null}
           <Button
             kind="primary"
             text="Submit"
             type="submit"
-            isLoading={pending}
+            isLoading={signupLoading}
             disabled={
               email.length === 0 ||
               password.length === 0 ||

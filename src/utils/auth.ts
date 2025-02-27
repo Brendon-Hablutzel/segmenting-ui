@@ -10,8 +10,7 @@ import {
   SignUpCommand,
   SignUpCommandInput,
 } from '@aws-sdk/client-cognito-identity-provider';
-
-const POOL_CLIENT_ID = 'j8ft0t21ksk2c0ts7gp71p7ou';
+import { assertIsDefined, POOL_CLIENT_ID } from '.';
 
 const client = new CognitoIdentityProviderClient({
   region: 'us-east-1',
@@ -21,6 +20,7 @@ export const logIn = async (
   email: string,
   password: string,
 ): Promise<AuthenticationResultType | undefined> => {
+  assertIsDefined('user pool client id', POOL_CLIENT_ID);
   const input: InitiateAuthCommandInput = {
     AuthFlow: 'USER_PASSWORD_AUTH',
     ClientId: POOL_CLIENT_ID,
@@ -35,6 +35,7 @@ export const logIn = async (
 };
 
 export const signUp = async (email: string, password: string) => {
+  assertIsDefined('user pool client id', POOL_CLIENT_ID);
   const input: SignUpCommandInput = {
     ClientId: POOL_CLIENT_ID,
     Username: email,
@@ -45,6 +46,7 @@ export const signUp = async (email: string, password: string) => {
 };
 
 export const confirmEmail = async (email: string, code: string) => {
+  assertIsDefined('user pool client id', POOL_CLIENT_ID);
   const input: ConfirmSignUpCommandInput = {
     ClientId: POOL_CLIENT_ID,
     Username: email,
@@ -85,14 +87,4 @@ export const validatePassword = (
     containsSymbol,
     validLength,
   };
-};
-
-// TODO: use something secure
-export const storeAuthLocally = (auth: AuthenticationResultType) => {
-  return localStorage.setItem('segmentingAuth', JSON.stringify(auth));
-};
-
-export const getAuthLocally = (): AuthenticationResultType | null => {
-  const item = localStorage.getItem('segmentingAuth');
-  return item ? JSON.parse(item) : null;
 };

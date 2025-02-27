@@ -17,7 +17,7 @@ export default function Home() {
         </div>
         <div className="flex items-center justify-center">
           <h1 className="text-text-light text-xl text-center">
-            A platform for generalized image segmentation
+            A platform for generalized image processing and analysis
           </h1>
         </div>
       </div>
