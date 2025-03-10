@@ -17,7 +17,7 @@ export default function Error({
   return (
     <div className="h-screen flex justify-center">
       <div className="mt-[10%] flex flex-col items-center gap-3">
-        <div className="text-xl">Error: an unexpected error occurred</div>
+        <div className="text-xl">An unexpected error occurred</div>
         <Button kind="primary" text="Try again" onClick={() => reset()} />
       </div>
     </div>

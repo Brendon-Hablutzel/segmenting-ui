@@ -77,22 +77,25 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
       try {
         const jobResponse = await getJob(auth.idToken, jobId);
 
-        if (!jobResponse.success) {
-          // TODO: handle specific errors
+        if (!jobResponse) {
           setJobData({
             status: 'error',
-            error: 'Unable to get job data',
+            error: 'Job not found',
           });
-        } else {
-          setJobData({
-            status: 'success',
-            job: jobResponse.jobData,
-            urls: jobResponse.jobUrls,
-          });
+          return;
         }
+
+        if (!jobResponse.success) {
+          throw new Error(jobResponse.error);
+        }
+
+        setJobData({
+          status: 'success',
+          job: jobResponse.jobData,
+          urls: jobResponse.jobUrls,
+        });
       } catch (e) {
         console.error(e);
-        // TODO: handle specific errors
         setJobData({
           status: 'error',
           error: 'Unable to get job data',
@@ -152,8 +155,7 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
           <div className="text-center">original</div>
         </div>
         {jobData.job.status === 'finished' &&
-        jobData.urls.processedPresignedUrl &&
-        jobData.job.processedBlurHash ? (
+        jobData.urls.processedPresignedUrl ? (
           <div className="flex flex-col gap-2">
             <div className="rounded-xl border-[1px] border-white/20">
               <SegmentingImage

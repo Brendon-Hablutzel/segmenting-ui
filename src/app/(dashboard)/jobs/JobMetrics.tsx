@@ -78,19 +78,14 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
         const metricsResponse = await getMetrics(auth.idToken);
 
         if (!metricsResponse.success) {
-          // TODO: handle specific errors
-          setMetricsData({
-            status: 'error',
-            error: 'Error fetching metrics',
-          });
-        } else {
-          setMetricsData({
-            status: 'success',
-            metrics: metricsResponse.metrics,
-          });
+          throw new Error(metricsResponse.error);
         }
+
+        setMetricsData({
+          status: 'success',
+          metrics: metricsResponse.metrics,
+        });
       } catch (e) {
-        // TODO: handle specific errors
         console.error(e);
         setMetricsData({
           status: 'error',

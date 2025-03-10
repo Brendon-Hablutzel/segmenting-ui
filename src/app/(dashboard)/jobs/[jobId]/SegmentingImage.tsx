@@ -8,7 +8,7 @@ const SegmentingImage = ({
   options: { height, width },
 }: {
   url: string;
-  blurHash: string;
+  blurHash?: string;
   options: {
     height?: number;
     width?: number;
@@ -27,8 +27,8 @@ const SegmentingImage = ({
       height={adjustedHeight}
       width={adjustedWidth}
       fill={false}
-      placeholder="blur"
-      blurDataURL={blurhashToBase64(blurHash)}
+      placeholder={blurHash ? 'blur' : 'empty'}
+      blurDataURL={blurHash ? blurhashToBase64(blurHash) : undefined}
       className="rounded-xl"
     />
   );
