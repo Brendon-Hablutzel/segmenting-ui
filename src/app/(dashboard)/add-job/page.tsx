@@ -1,6 +1,5 @@
 'use client';
 
-// import initializeJob from '@/app/actions/initialize-job';
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import { useAuthContext } from '@/hooks/useAuthContext';
@@ -86,7 +85,7 @@ const AddJob = () => {
       const res = await startJob(auth.idToken, module, jobName, blob);
 
       if (!res.success) {
-        throw new Error('job was not started successfully');
+        throw new Error(res.error);
       }
 
       setSubmissionStatus({
@@ -94,7 +93,6 @@ const AddJob = () => {
       });
       router.push('/jobs');
     } catch (e) {
-      // TODO: handle specific errors
       console.error(e);
       setSubmissionStatus({
         status: 'error',

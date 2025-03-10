@@ -3,6 +3,8 @@ import { API_BASE_URL, assertIsDefined } from '.';
 
 // TODO: handle token refreshing
 
+export const JobStatus = z.enum(['waiting', 'running', 'finished']);
+
 const ErrorResponse = z.object({
   success: z.literal(false),
   error: z.string(),
@@ -10,7 +12,7 @@ const ErrorResponse = z.object({
 
 const JobData = z.object({
   jobId: z.string(),
-  status: z.string(), // TODO: narrower type
+  status: JobStatus,
   name: z.string(),
   submittedAt: z.number().transform((s) => new Date(s)),
   pickedupAt: z
@@ -88,7 +90,7 @@ type JobResponseType = z.infer<typeof JobResponse>;
 export const getJob = async (
   idToken: string,
   jobId: string,
-): Promise<JobResponseType> => {
+): Promise<JobResponseType | null> => {
   assertIsDefined('api base url', API_BASE_URL);
   const res = await fetch(`${API_BASE_URL}/jobs/${jobId}`, {
     headers: {
@@ -97,13 +99,15 @@ export const getJob = async (
   });
 
   if (res.status != 200) {
-    // TODO: specificity
-    throw new Error('bad request');
+    if (res.status === 404) {
+      return null;
+    }
+
+    throw new Error(res.statusText);
   }
 
   const data = await res.json();
 
-  // TODO: handle job not found (backend should return 404)
   return JobResponse.parse(data);
 };
 
@@ -138,7 +142,7 @@ export const startJob = async (
   );
 
   if (res.status !== 200) {
-    throw new Error('error starting job');
+    throw new Error(res.statusText);
   }
 
   const data = await res.json();
@@ -181,6 +185,10 @@ export const getMetrics = async (
       Authorization: `Bearer ${idToken}`,
     },
   });
+
+  if (res.status !== 200) {
+    throw new Error(res.statusText);
+  }
 
   const data = await res.json();
 

@@ -74,7 +74,6 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
         const jobsResponse = await listJobs(auth.idToken);
 
         if (!jobsResponse.success) {
-          // TODO: handle specific errors
           setJobsData({
             status: 'error',
             error: 'Unable to fetch jobs',
@@ -91,7 +90,6 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
         }
       } catch (e) {
         console.error(e);
-        // TODO: handle specific errors
         setJobsData({
           status: 'error',
           error: 'Unable to fetch jobs',
@@ -110,23 +108,9 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
     <div className="flex flex-col gap-4 text-text-light h-full">
       <div className="flex gap-1 items-baseline">
         <div className="text-3xl">Jobs</div>
-        <div className="text-lg">
-          {/* {jobsData.status === 'loading-after-success' ||
-          jobsData.status === 'loading-after-error' ? (
-            <Oval width="1rem" height="1rem" />
-          ) : (
-            ''
-          )} */}
-          {/* <Oval
-            width="1rem"
-            height="1rem"
-            className={`${jobsData.status === 'loading-after-success' || jobsData.status === 'loading-after-error' ? 'opacity-100' : 'opacity-0'}`}
-          /> */}
-        </div>
       </div>
       {jobsData.status === 'error' ||
       jobsData.status === 'loading-after-error' ? (
-        // TODO: style error
         <div>{jobsData.error}</div>
       ) : jobsData.status === 'loading-initially' ? (
         <ListJobsTableSkeleton />
