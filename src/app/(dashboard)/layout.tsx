@@ -119,6 +119,14 @@ export default function DashboardLayout({
             </div>
           ) : null}
           <div className="p-4 max-h-screen">{children}</div>
+          <div className="p-4 flex justify-center">
+            <Link
+              href="/logout"
+              className={`bg-[#1B251B]/60 text-center text-text-light hover:cursor-pointer w-full py-2 rounded-xl`}
+            >
+              Logout
+            </Link>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-[1fr_4fr] w-full">

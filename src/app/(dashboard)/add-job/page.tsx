@@ -102,7 +102,7 @@ const AddJob = () => {
   };
 
   return (
-    <div className="text-text-light pb-10">
+    <div className="text-text-light">
       <div className="h-fit bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
         <form
           className="flex flex-col gap-4 h-full"
