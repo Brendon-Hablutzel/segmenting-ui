@@ -25,6 +25,7 @@ const LogOut = () => {
           } else {
             console.error(e);
             setError('failed to log out');
+            return;
           }
         }
         setAuth(null);
@@ -37,7 +38,7 @@ const LogOut = () => {
     <div className="h-screen flex justify-center">
       <div className="mt-[10%] flex flex-col items-center gap-3">
         <div className="text-xl">Logging Out</div>
-        {error !== null ? (
+        {error === null ? (
           <Oval width="3rem" height="3rem" />
         ) : (
           <div>Error logging out, reload to try again</div>

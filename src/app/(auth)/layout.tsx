@@ -21,7 +21,7 @@ export default function AuthLayout({
 
   return !authLoaded || auth ? null : (
     <div className="h-[100vh] max-w-[100vw] bg-bg-dark p-4 flex justify-center">
-      <div className="bg-bg-card w-[32rem] h-fit py-6 px-10 rounded-xl border-[1px] border-white/20 mt-[10vh]">
+      <div className="bg-bg-card w-[32rem] h-fit py-6 px-5 lg:px-10 rounded-xl border-[1px] border-white/20 mt-[10vh]">
         {children}
       </div>
     </div>

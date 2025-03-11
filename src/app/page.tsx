@@ -3,7 +3,7 @@ import UploadCloudIcon from '../svg/UploadCloudIcon';
 
 export default function Home() {
   return (
-    <div className="h-[100vh] max-w-[100vw] bg-bg-dark grid grid-rows-[2fr_2fr_3fr] py-16 px-5 gap-5 font-[family-name:var(--font-ibm-sans)]">
+    <div className="max-h-[100vh] max-w-[100vw] bg-bg-dark grid grid-rows-[20vh_20vh_20vh] py-16 px-5 gap-10 font-[family-name:var(--font-ibm-sans)]">
       <div className="flex flex-col justify-end">
         <div className="flex justify-center">
           <UploadCloudIcon strokeWidth="4" pathClassName="stroke-text-light" />
@@ -21,12 +21,12 @@ export default function Home() {
           </h1>
         </div>
       </div>
-      <div className="flex justify-center p-2">
+      <div className="flex justify-center p-2 h-fit">
         <div className="flex flex-col gap-5">
           <div className="flex justify-center">
             <Link
               href="/login"
-              className="flex justify-center items-center text-xl rounded-3xl bg-text-light text-text-dark hover:cursor-pointer transition ease-out duration-150 w-[25rem] h-[3rem]"
+              className="flex justify-center items-center text-xl rounded-3xl bg-text-light text-text-dark hover:cursor-pointer transition ease-out duration-150 w-[25rem] max-w-[80vw] h-[3rem]"
             >
               Log In
             </Link>
@@ -34,7 +34,7 @@ export default function Home() {
           <div className="flex justify-center">
             <Link
               href="/signup"
-              className="flex justify-center items-center text-xl border-[0.5px] border-text-light text-text-light rounded-3xl transition ease-out duration-150 w-[25rem] h-[3rem]"
+              className="flex justify-center items-center text-xl border-[0.5px] border-text-light text-text-light rounded-3xl transition ease-out duration-150 w-[25rem] max-w-[80vw] h-[3rem]"
             >
               Sign Up
             </Link>
