@@ -3,7 +3,9 @@ import { API_BASE_URL, assertIsDefined } from '.';
 
 // TODO: handle token refreshing
 
-export const JobStatus = z.enum(['waiting', 'running', 'finished']);
+export const JobStatus = z.enum(['waiting', 'running', 'finished', 'error']);
+
+export type JobStatusType = z.infer<typeof JobStatus>;
 
 const ErrorResponse = z.object({
   success: z.literal(false),
@@ -158,15 +160,25 @@ const Metrics = z.object({
     waiting: z.number(),
     running: z.number(),
     finished: z.number(),
+    error: z.number(),
   }),
-  jobTimestamps: z.array(z.number()),
 });
 
 export type MetricsType = z.infer<typeof Metrics>;
 
+const MetricsJobs = z.array(
+  z.object({
+    status: JobStatus,
+    submittedAt: z.number().transform((s) => (s ? new Date(s) : undefined)),
+  }),
+);
+
+export type MetricsJobsType = z.infer<typeof MetricsJobs>;
+
 const SuccessMetricsResponse = z.object({
   success: z.literal(true),
   metrics: Metrics,
+  jobs: MetricsJobs,
 });
 
 const MetricsResponse = z.discriminatedUnion('success', [

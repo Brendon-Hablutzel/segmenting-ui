@@ -101,6 +101,8 @@ const AddJob = () => {
     }
   };
 
+  // TODO: pressing enter once all the fields are filled out and an image has been uploaded
+  // causes the image to disappear
   return (
     <div className="text-text-light">
       <div className="h-fit bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">

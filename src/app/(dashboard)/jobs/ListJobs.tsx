@@ -117,11 +117,10 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
       ) : (
         <div className="flex flex-col gap-1 flex-grow min-h-0">
           <div className="flex justify-between text-left text-text-light font-bold p-1">
-            <div className="w-[40%] md:w-[20%]">Name</div>
+            <div className="w-[40%] md:w-[25%]">Name</div>
             <div className="max-md:hidden w-[15%]">Module</div>
-            <div className="w-[30%] md:w-[10%]">Format</div>
             <div className="w-[30%] md:w-[10%]">Status</div>
-            <div className="max-md:hidden w-[25%]">Submitted at</div>
+            <div className="max-md:hidden w-[30%]">Submitted at (UTC)</div>
             <div className="max-md:hidden w-[10%]">Waiting</div>
             <div className="max-md:hidden w-[10%]">Processing</div>
           </div>
@@ -132,20 +131,32 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
                   key={job.jobId}
                   className="flex justify-between text-left text-text-light hover:bg-[#1B251B]/50 p-1 rounded-lg"
                 >
-                  <div className="w-[40%] md:w-[20%]">
+                  <div className="w-[40%] md:w-[25%]">
                     <Link href={`/jobs/${job.jobId}`} target="_blank">
                       {job.name}
                     </Link>
                   </div>
                   <div className="max-md:hidden w-[15%]">{job.module}</div>
-                  <div className="w-[30%] md:w-[10%]">{job.imageFormat}</div>
                   <div
-                    className={`w-[30%] md:w-[10%] ${job.status === 'finished' ? 'text-green-600' : job.status === 'running' ? 'text-yellow-400' : 'text-gray-400'}`}
+                    className={`w-[30%] md:w-[10%] ${
+                      job.status === 'finished'
+                        ? 'text-green-600'
+                        : job.status === 'running'
+                          ? 'text-yellow-400'
+                          : job.status === 'error'
+                            ? 'text-red-600'
+                            : 'text-gray-400'
+                    }`}
                   >
                     {job.status}
                   </div>
-                  <div className="max-md:hidden w-[25%]">
-                    {job.submittedAt.toISOString()} UTC
+                  <div className="max-md:hidden w-[30%]">
+                    {
+                      job.submittedAt
+                        .toISOString()
+                        .replace('T', ' ')
+                        .split('.')[0]
+                    }
                   </div>
                   <div className="max-md:hidden  w-[10%]">
                     {job.pickedupAt
