@@ -6,25 +6,25 @@ const JobMetricsSkeleton = () => {
   const skeletonStyle = 'bg-[#1B251B] opacity-80 rounded-xl animate-pulse';
 
   return (
-    <div className="grid grid-cols-[11fr_10fr] gap-4 h-full">
+    <div className="grid lg:grid-cols-[11fr_10fr] gap-4 h-full">
       <div className="grid gap-4">
-        <div className="grid grid-cols-[1fr_2fr] gap-5 bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
+        <div className="h-32 grid grid-cols-[1fr_2fr] gap-5 bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
           <div className={`${skeletonStyle} h-full`}></div>
           <div className={`${skeletonStyle} h-full`}></div>
         </div>
-        <div className="grid gap-4 grid-cols-[1fr_1fr_1fr]">
-          <div className="flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
+        <div className="grid gap-4 sm:grid-cols-[1fr_1fr_1fr] max-sm:grid-cols-[1fr_1fr]">
+          <div className="h-32 flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
             <div className={`${skeletonStyle} w-full h-full`}></div>
           </div>
           <div className="flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
             <div className={`${skeletonStyle} w-full h-full`}></div>
           </div>
-          <div className="flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
+          <div className="max-sm:hidden flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
             <div className={`${skeletonStyle} w-full h-full`}></div>
           </div>
         </div>
       </div>
-      <div className="bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
+      <div className="max-lg:hidden bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
         <div className={`${skeletonStyle} w-full h-full`}></div>
       </div>
     </div>
@@ -109,32 +109,32 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
   ) : metricsData.status === 'loading-initially' ? (
     <JobMetricsSkeleton />
   ) : (
-    <div className="grid grid-cols-[11fr_10fr] gap-4 h-full">
+    <div className="grid lg:grid-cols-[11fr_10fr] gap-4 h-full">
       <div className="grid gap-4">
-        <div className="flex justify-between gap-10 bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
+        <div className="flex justify-between gap-5 xl:gap-10 bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
           <div className="flex flex-col justify-around whitespace-nowrap">
             <div className="text-7xl text-center font-medium">
               {metricsData.metrics.totalJobs}
             </div>
-            <div className="text-lg text-center">Total Jobs</div>
+            <div className="text-sm md:text-lg text-center">Total Jobs</div>
           </div>
           <div className="w-full flex items-center">
             <div className="w-full flex flex-col justify-center gap-2">
-              <div className="flex w-full h-10 text-lg">
+              <div className="flex w-full h-10 text-base md:text-lg">
                 <div className="flex-1 flex justify-start items-end gap-1">
-                  <span className="font-bold text-xl">
+                  <span className="font-bold">
                     {metricsData.metrics.byStatus.waiting}
                   </span>
                   waiting
                 </div>
                 <div className="flex-1 flex justify-center items-end gap-1">
-                  <span className="font-bold text-xl">
+                  <span className="font-bold">
                     {metricsData.metrics.byStatus.running}
                   </span>
                   running
                 </div>
                 <div className="flex-1 flex justify-end items-end gap-1">
-                  <span className="font-bold text-xl">
+                  <span className="font-bold">
                     {metricsData.metrics.byStatus.finished}
                   </span>
                   finished
@@ -182,7 +182,7 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
             </div>
           </div>
         </div>
-        <div className="grid gap-4 grid-cols-[1fr_1fr_1fr]">
+        <div className="grid gap-4 sm:grid-cols-[1fr_1fr_1fr] max-sm:grid-cols-[1fr_1fr]">
           <div className="flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
             <div className="text-6xl text-center">
               {(
@@ -192,7 +192,7 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
               ).toFixed(1)}
               s
             </div>
-            <div className="text-md text-center whitespace-nowrap">
+            <div className="text-sm md:text-md text-center whitespace-nowrap">
               Avg Processing Time
             </div>
           </div>
@@ -201,9 +201,9 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
               {/* TODO: implement once error states are implemented */}
               0%
             </div>
-            <div className="text-md text-center">Job Failures</div>
+            <div className="text-sm md:text-md text-center">Job Failures</div>
           </div>
-          <div className="flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
+          <div className="max-sm:hidden flex flex-col justify-around bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4 text-text-light">
             <div className="text-6xl text-center">
               {(
                 metricsData.metrics.totalWaitingDurationMillis /
@@ -217,7 +217,7 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
           </div>
         </div>
       </div>
-      <div className="bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
+      <div className="max-lg:hidden bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
         graph
       </div>
     </div>

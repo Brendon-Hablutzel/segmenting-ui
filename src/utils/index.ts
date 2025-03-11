@@ -37,3 +37,5 @@ export const getAdjustedSize = ({
 
   return { width: newWidth, height: newHeight };
 };
+
+export const MOBILE_SIZE_CUTOFF = 768;

@@ -102,17 +102,17 @@ const AddJob = () => {
   };
 
   return (
-    <div className="text-text-light">
+    <div className="text-text-light pb-10">
       <div className="h-fit bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
         <form
           className="flex flex-col gap-4 h-full"
           onSubmit={handleAddJobSubmit}
         >
           <div className="text-3xl">Add Job</div>
-          <div className="grid grid-cols-[3fr_2fr] gap-4 h-full">
+          <div className="grid lg:grid-cols-[3fr_2fr] gap-4 h-full">
             {image ? (
               <div className="flex justify-center">
-                <div className="h-auto w-fit max-h-[80vh] overflow-hidden relative flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-xl">
+                <div className="h-auto w-fit overflow-hidden relative flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-xl">
                   <button
                     className="absolute top-2 right-2"
                     onClick={() => setImage(null)}
@@ -134,9 +134,9 @@ const AddJob = () => {
               </div>
             ) : null}
             <div
-              className={`${image ? 'hidden' : ''} w-full flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4`}
+              className={`${image ? 'hidden' : ''} h-[25vh] lg:h-auto w-full flex justify-center items-center bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4`}
             >
-              <label className="hover:cursor-pointer p-2 text-text-light/50 select-none">
+              <label className="hover:cursor-pointer p-2 text-text-light/50 select-none text-center">
                 Click here to upload an image
                 <input
                   className="hidden"
@@ -147,7 +147,7 @@ const AddJob = () => {
               </label>
             </div>
             <div className="flex flex-col px-6 gap-5">
-              <div className="text-lg">
+              <div className="text-lg text-center lg:text-left">
                 Upload an image and enter configuration details
               </div>
               <TextInput
