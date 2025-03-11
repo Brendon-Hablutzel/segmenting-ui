@@ -118,7 +118,7 @@ export default function DashboardLayout({
               </Link>
             </div>
           ) : null}
-          <div className="p-4 max-h-screen">{children}</div>
+          <div className="p-4">{children}</div>
           <div className="p-4 flex justify-center">
             <Link
               href="/logout"
@@ -131,7 +131,7 @@ export default function DashboardLayout({
       ) : (
         <div className="grid grid-cols-[1fr_4fr] w-full">
           {/* start of navbar */}
-          <div className="mr-8 flex flex-col justify-between h-[100vh] p-5 sticky top-0">
+          <div className="flex flex-col justify-between h-[100vh] p-5 sticky top-0">
             <div className="flex flex-col gap-6">
               <Link href="/" className="flex items-center gap-4 px-3">
                 <div className="">
@@ -166,12 +166,14 @@ export default function DashboardLayout({
                 />
               </div>
             </div>
-            <NavbarLink
-              active={false}
-              href="/logout"
-              name="Logout"
-              Icon={PowerIcon}
-            />
+            <div>
+              <NavbarLink
+                active={false}
+                href="/logout"
+                name="Logout"
+                Icon={PowerIcon}
+              />
+            </div>
           </div>
           <div className="p-5 max-h-screen">{children}</div>
         </div>

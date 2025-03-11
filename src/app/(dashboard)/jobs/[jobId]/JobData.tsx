@@ -10,18 +10,22 @@ const JobDataSkeleton = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-baseline justify-between">
+      <div className="flex flex-col lg:flex-row gap-2 lg:items-baseline lg:justify-between">
         <div className="flex gap-2 items-baseline">
-          <div className={`h-10 w-72 ${skeletonStyle}`}></div>
+          <div className={`h-10 w-72 ${skeletonStyle}`}>{/* name */}</div>
         </div>
-        <div className={`h-8 w-96 text-text-light/75 ${skeletonStyle}`} />
+        <div className="flex items-baseline">
+          <div className={`h-8 lg:h-10 w-96 ${skeletonStyle}`}>
+            {/* module and status */}
+          </div>
+        </div>
       </div>
-      <div className="flex justify-around">
-        <div className="flex flex-col gap-2">
-          <div className={`h-[500px] w-[500px] ${skeletonStyle}`} />
+      <div className="flex flex-col lg:flex-row justify-around gap-3 items-center">
+        <div className="flex h-[350px] lg:h-[500px] w-[90%] max-w-[500px]">
+          <div className={`h-full w-full ${skeletonStyle}`} />
         </div>
-        <div className="flex flex-col gap-2">
-          <div className={`h-[500px] w-[500px] ${skeletonStyle}`} />
+        <div className="flex h-[350px] lg:h-[500px] w-[90%] max-w-[500px]">
+          <div className={`h-full w-full ${skeletonStyle}`} />
         </div>
       </div>
     </div>
@@ -123,16 +127,22 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
     <JobDataSkeleton />
   ) : (
     <div className="flex flex-col gap-4">
-      <div className="flex items-baseline justify-between">
+      <div className="lg:flex lg:items-baseline lg:justify-between">
         <div className="text-3xl">{jobData.job.name}</div>
-        <div className="flex justify-between gap-2">
-          <div className={`text-3xl text-text-light/75`}>
-            {jobData.job.module}
-          </div>
-          <div className="text-3xl text-text-light/75"> | </div>
-          <div className={`text-3xl text-text-light/75 whitespace-nowrap`}>
+        <div className="text-2xl lg:text-3xl flex lg:justify-between gap-2">
+          <div className={`text-text-light/75`}>{jobData.job.module}</div>
+          <div className="text-text-light/75"> | </div>
+          <div className={` whitespace-nowrap`}>
             <span
-              className={`${jobData.job.status === 'finished' ? 'text-green-600' : jobData.job.status === 'running' ? 'text-yellow-400' : ''}`}
+              className={`${
+                jobData.job.status === 'finished'
+                  ? 'text-green-600'
+                  : jobData.job.status === 'running'
+                    ? 'text-yellow-400'
+                    : jobData.job.status === 'error'
+                      ? 'text-red-600'
+                      : 'text-text-light/75'
+              }`}
             >
               {jobData.job.status}
             </span>
@@ -140,7 +150,7 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-around gap-3">
+      <div className="flex flex-col lg:flex-row justify-around gap-3">
         <div className="flex flex-col gap-2">
           <div className="rounded-xl border-[1px] border-white/20">
             <SegmentingImage
@@ -172,7 +182,9 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
         ) : null}
       </div>
       <div className={`text-xl text-text-light/75`}>
-        submitted at {jobData.job.submittedAt.toISOString()} UTC
+        submitted at{' '}
+        {jobData.job.submittedAt.toISOString().replace('T', ' ').split('.')[0]}{' '}
+        UTC
       </div>
     </div>
   );
