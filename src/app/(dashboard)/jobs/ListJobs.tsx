@@ -9,15 +9,15 @@ const ListJobsTableSkeleton = () => {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex justify-between text-left text-text-light font-bold m-1 h-8 gap-1">
-        <div className={`w-[20%] ${skeletonStyle}`}></div>
-        <div className={`w-[15%] ${skeletonStyle}`}></div>
-        <div className={`w-[10%] ${skeletonStyle}`}></div>
-        <div className={`w-[10%] ${skeletonStyle}`}></div>
-        <div className={`w-[25%] ${skeletonStyle}`}></div>
-        <div className={`w-[10%] ${skeletonStyle}`}></div>
-        <div className={`w-[10%] ${skeletonStyle}`}></div>
+        <div className={`w-[40%] md:w-[20%] ${skeletonStyle}`}></div>
+        <div className={`max-md:hidden w-[15%] ${skeletonStyle}`}></div>
+        <div className={`w-[30%] md:w-[10%] ${skeletonStyle}`}></div>
+        <div className={`w-[30%] md:w-[10%] ${skeletonStyle}`}></div>
+        <div className={`max-md:hidden w-[25%] ${skeletonStyle}`}></div>
+        <div className={`max-md:hidden w-[10%] ${skeletonStyle}`}></div>
+        <div className={`max-md:hidden w-[10%] ${skeletonStyle}`}></div>
       </div>
-      {[...Array(5)].map((_, idx) => (
+      {[...Array(4)].map((_, idx) => (
         <div
           key={idx}
           className={`${skeletonStyle} h-8 flex justify-between m-1 rounded-lg`}
@@ -117,13 +117,13 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
       ) : (
         <div className="flex flex-col gap-1 flex-grow min-h-0">
           <div className="flex justify-between text-left text-text-light font-bold p-1">
-            <div className="w-[20%]">Name</div>
-            <div className="w-[15%]">Module</div>
-            <div className="w-[10%]">Format</div>
-            <div className="w-[10%]">Status</div>
-            <div className="w-[25%]">Submitted at</div>
-            <div className="w-[10%]">Waiting</div>
-            <div className="w-[10%]">Processing</div>
+            <div className="w-[40%] md:w-[20%]">Name</div>
+            <div className="max-md:hidden w-[15%]">Module</div>
+            <div className="w-[30%] md:w-[10%]">Format</div>
+            <div className="w-[30%] md:w-[10%]">Status</div>
+            <div className="max-md:hidden w-[25%]">Submitted at</div>
+            <div className="max-md:hidden w-[10%]">Waiting</div>
+            <div className="max-md:hidden w-[10%]">Processing</div>
           </div>
           <div className="overflow-y-auto flex-1">
             {jobsData.jobs.map((job) => {
@@ -132,22 +132,22 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
                   key={job.jobId}
                   className="flex justify-between text-left text-text-light hover:bg-[#1B251B]/50 p-1 rounded-lg"
                 >
-                  <div className="w-[20%]">
+                  <div className="w-[40%] md:w-[20%]">
                     <Link href={`/jobs/${job.jobId}`} target="_blank">
                       {job.name}
                     </Link>
                   </div>
-                  <div className="w-[15%]">{job.module}</div>
-                  <div className="w-[10%]">{job.imageFormat}</div>
+                  <div className="max-md:hidden w-[15%]">{job.module}</div>
+                  <div className="w-[30%] md:w-[10%]">{job.imageFormat}</div>
                   <div
-                    className={`w-[10%] ${job.status === 'finished' ? 'text-green-600' : job.status === 'running' ? 'text-yellow-400' : 'text-gray-400'}`}
+                    className={`w-[30%] md:w-[10%] ${job.status === 'finished' ? 'text-green-600' : job.status === 'running' ? 'text-yellow-400' : 'text-gray-400'}`}
                   >
                     {job.status}
                   </div>
-                  <div className="w-[25%]">
+                  <div className="max-md:hidden w-[25%]">
                     {job.submittedAt.toISOString()} UTC
                   </div>
-                  <div className="w-[10%]">
+                  <div className="max-md:hidden  w-[10%]">
                     {job.pickedupAt
                       ? `${(
                           (job.pickedupAt.valueOf() -
@@ -156,7 +156,7 @@ const ListJobs = ({ auth }: { auth: AuthDataType }) => {
                         ).toFixed(1)}s`
                       : `${((new Date().valueOf() - job.submittedAt.valueOf()) / 1000).toFixed(1)}s`}
                   </div>
-                  <div className="w-[10%]">
+                  <div className="max-md:hidden w-[10%]">
                     {job.pickedupAt && job.finishedAt
                       ? `${(
                           (job.finishedAt.valueOf() -
