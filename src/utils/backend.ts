@@ -60,8 +60,7 @@ export const listJobs = async (idToken: string): Promise<JobsResponseType> => {
   });
 
   if (res.status != 200) {
-    // TODO: specificity
-    throw new Error('bad request');
+    throw new Error(res.statusText);
   }
 
   const data = await res.json();
@@ -127,21 +126,18 @@ type StartJobResponseType = z.infer<typeof StartJobResponse>;
 
 export const startJob = async (
   idToken: string,
-  module: string,
-  name: string,
-  image: BodyInit,
+  formData: FormData,
 ): Promise<StartJobResponseType> => {
   assertIsDefined('api base url', API_BASE_URL);
-  const res = await fetch(
-    `${API_BASE_URL}/jobs?module=${module}&name=${name}`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: image,
+  const res = await fetch(`${API_BASE_URL}/jobs`, {
+    method: 'POST',
+    headers: {
+      // do not set custom content type header
+      // https://stackoverflow.com/questions/67996124/unable-to-load-file-due-to-multipart-boundary-not-found/67996268#67996268
+      Authorization: `Bearer ${idToken}`,
     },
-  );
+    body: formData,
+  });
 
   if (res.status !== 200) {
     throw new Error(res.statusText);

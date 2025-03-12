@@ -48,6 +48,7 @@ const AddJob = () => {
       if (ev.length === 0) {
         return;
       }
+
       const img: HTMLImageElement = document.createElement('img');
       const imgUrl = URL.createObjectURL(ev[0]);
 
@@ -80,9 +81,13 @@ const AddJob = () => {
     }
 
     try {
-      const blob = new Blob([image.file], { type: image.file.type });
+      const formData = new FormData();
 
-      const res = await startJob(auth.idToken, module, jobName, blob);
+      formData.append('jobName', jobName);
+      formData.append('module', module);
+      formData.append('image', image.file);
+
+      const res = await startJob(auth.idToken, formData);
 
       if (!res.success) {
         throw new Error(res.error);

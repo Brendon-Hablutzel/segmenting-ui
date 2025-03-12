@@ -2,6 +2,7 @@ import { AuthDataType } from '@/app/lib/types';
 import { getMetrics, MetricsJobsType, MetricsType } from '@/utils/backend';
 import { useEffect, useState } from 'react';
 import JobsOverTimeChart from './JobsOverTimeChart';
+import useWindowDimensions from '@/hooks/useWindowDimensions';
 
 const JobMetricsSkeleton = () => {
   const skeletonStyle = 'bg-[#1B251B] opacity-80 rounded-xl animate-pulse';
@@ -105,6 +106,8 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
 
     return () => clearInterval(interval);
   }, [auth.idToken]);
+
+  const windowDimensions = useWindowDimensions();
 
   return metricsData.status === 'error' ||
     metricsData.status === 'loading-after-error' ? (
@@ -247,9 +250,11 @@ export const JobMetrics = ({ auth }: { auth: AuthDataType }) => {
           </div>
         </div>
       </div>
-      <div className="max-lg:hidden bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
-        <JobsOverTimeChart jobs={metricsData.jobs} />
-      </div>
+      {windowDimensions.width >= 1024 ? (
+        <div className="bg-bg-card border-[1px] border-text-light/10 rounded-3xl p-4">
+          <JobsOverTimeChart jobs={metricsData.jobs} />
+        </div>
+      ) : null}
     </div>
   );
 };
