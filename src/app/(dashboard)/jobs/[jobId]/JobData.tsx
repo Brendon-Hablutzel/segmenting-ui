@@ -78,6 +78,10 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
               };
       });
 
+      if (!navigator.onLine) {
+        return;
+      }
+
       try {
         const jobResponse = await getJob(auth.idToken, jobId);
 
@@ -151,8 +155,8 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
         </div>
       </div>
       <div className="flex flex-col lg:flex-row justify-around gap-3">
-        <div className="flex flex-col gap-2">
-          <div className="rounded-xl border-[1px] border-white/20">
+        <div className="flex flex-col gap-2 items-center">
+          <div className="w-fit rounded-xl border-[1px] border-white/20">
             <SegmentingImage
               url={jobData.urls.originalPresignedUrl}
               blurHash={jobData.job.originalBlurHash}
@@ -166,8 +170,8 @@ const JobData = ({ jobId, auth }: { jobId: string; auth: AuthDataType }) => {
         </div>
         {jobData.job.status === 'finished' &&
         jobData.urls.processedPresignedUrl ? (
-          <div className="flex flex-col gap-2">
-            <div className="rounded-xl border-[1px] border-white/20">
+          <div className="flex flex-col gap-2 items-center">
+            <div className="w-fit rounded-xl border-[1px] border-white/20">
               <SegmentingImage
                 url={jobData.urls.processedPresignedUrl}
                 blurHash={jobData.job.processedBlurHash}
