@@ -5,7 +5,7 @@ import Image from 'next/image';
 export default function Home() {
   return (
     <div className="text-text-light h-screen">
-      <div className="sticky top-0 z-[1000] flex justify-between items-center px-8 py-9 bg-[#061006] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] h-14">
+      <div className="sticky top-0 z-[1000] flex justify-between items-center px-8 py-9 h-14">
         <div className="flex justify-start items-center gap-7 select-none">
           <div className="flex justify-between items-center gap-4">
             <div>
@@ -35,7 +35,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="p-6 flex flex-col items-center justify-center gap-5 md:gap-6 animate-fadeIn">
+      <div className="p-8 flex flex-col items-center justify-center gap-5 md:gap-6 animate-fadeIn">
         <div className="text-4xl sm:text-5xl md:text-6xl leading-tight font-bold text-center w-[90%] sm:w-[85%] md:w-[80%] lg:w-[80%] xl:w-[70%]">
           Generalized image transformation and analysis
         </div>
@@ -55,7 +55,7 @@ export default function Home() {
             height={100}
           />
           <Image
-            className="w-[80%] max-w-[350px] object-cover animate-fromRight absolute bottom-0 right-0 shadow-lg rounded-lg border-[1px] border-text-light/10"
+            className="w-[80%] max-w-[380px] object-cover animate-fromRight absolute bottom-0 right-0 shadow-lg rounded-lg border-[1px] border-text-light/10"
             alt="screenshot of add jobs page"
             src={'/add-job-screenshot.png'}
             width={350}
