@@ -17,6 +17,34 @@ export default {
         'bg-primary': '#2D8147',
         'bg-card': '#0B130B',
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '10%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fromLeft: {
+          '0%': {
+            left: '-75px',
+          },
+          '100%': {
+            left: '0px',
+          },
+        },
+        fromRight: {
+          '0%': {
+            right: '-50px',
+          },
+          '100%': {
+            right: '0px',
+          },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 1.5s forwards',
+        fromLeft: 'fromLeft 1s forwards',
+        fromRight: 'fromRight 1s forwards',
+      },
     },
   },
   plugins: [],

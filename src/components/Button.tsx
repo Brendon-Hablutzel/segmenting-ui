@@ -21,7 +21,8 @@ const Button = ({
         ? 'bg-text-light text-text-dark hover:cursor-pointer hover:brightness-75' // primary enabled
         : 'bg-text-light text-text-dark brightness-50 hover:cursor-not-allowed' // primary disabled
       : kind === 'secondary'
-        ? !disabled
+        ? // TODO: no hover style???
+          !disabled
           ? 'border-[0.5px] border-text-light text-text-light' // secondary enabled
           : 'border-[0.5px] border-text-light text-text-light brightness-50' // secondary disabled
         : !disabled
