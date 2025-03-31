@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss';
 export default {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/Components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
@@ -25,18 +25,18 @@ export default {
         },
         fromLeft: {
           '0%': {
-            left: '-75',
+            left: '-75px',
           },
           '100%': {
-            left: '0',
+            left: '0px',
           },
         },
         fromRight: {
           '0%': {
-            right: '-50',
+            right: '-50px',
           },
           '100%': {
-            right: '0',
+            right: '0px',
           },
         },
       },
